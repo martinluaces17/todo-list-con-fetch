@@ -3,11 +3,27 @@ import React, { useState } from "react";
 const Lista = () => {
 	const [tarea, setTarea] = useState("");
 	const [listaTareas, setListaTareas] = useState([]);
+	const [mouse, setMouse] = useState();
 
 	const agregarTarea = event => {
 		event.preventDefault();
 		setListaTareas([...listaTareas, tarea]);
 		setTarea("");
+	};
+
+	const eliminarTarea = index => {
+		let nuevaLista = listaTareas.filter((elem, i) => {
+			{
+				if (i != index) {
+					return elem;
+				}
+			}
+		});
+		setListaTareas(nuevaLista);
+	};
+
+	const mouseOver = index => {
+		setMouse(index);
 	};
 
 	return (
@@ -36,10 +52,23 @@ const Lista = () => {
 				<ul className="list-group-item text-left">
 					{listaTareas.map((element, index) => {
 						return (
-							<li key={index}>
+							<div
+								key={index}
+								onMouseOver={() => {
+									mouseOver(index);
+								}}
+								onClick={() => {
+									eliminarTarea(index);
+								}}>
 								{element}
-								<i type="button" className="far fa-trash-alt" />
-							</li>
+								<i
+									type="button"
+									className={
+										"far fa-trash-alt" +
+										(mouse == index ? "" : " invisible")
+									}
+								/>
+							</div>
 						);
 					})}
 				</ul>
